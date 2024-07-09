@@ -1,0 +1,32 @@
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 13.4
+WD,  299,  560001,  L-9,  Zone-5,  T-Shoe,  0.4,  0.0,Laser Cutter
+WD,  300,  560001,  L-9,  Zone-5,  TDFL STRT,  1.5,  0.0,Laser Cutter
+WD,  301,  560001,  L-9,  Zone-5,  T-Taper,  0.7,  0.0,Laser Cutter
+WD,  302,  560001,  L-9,  Zone-5,  TDFL STRT,  1.1,  0.0,Laser Cutter
+WD,  303,  560001,  L-9,  Zone-5,  T-Taper,  1.1,  0.6,Laser Cutter
+WD,  304,  560001,  L-9,  Zone-5,  TDFL-LPE STRT,  2.4,  0.0,Laser Cutter
+WD,  305,  560001,  L-9,  Zone-5,  T-Shoe,  0.3,  0.0,Laser Cutter
+WD,  306,  560001,  L-9,  Zone-5,  T-Straight (COIL),  1.5,  0.0,Laser Cutter
+WD,  306A,  560001,  L-9,  Zone-5,  RND Spigot,  0.1,  0.0,Laser Cutter
+WD,  306B,  560001,  L-9,  Zone-5,  RND Spigot,  0.2,  0.0,Laser Cutter
+WD,  307,  560001,  L-9,  Zone-5,  T-Taper,  0.5,  0.0,Laser Cutter
+WD,  308,  560001,  L-9,  Zone-5,  TDFL-LPE STRT,  1.2,  0.0,Laser Cutter
+WD,  308A,  560001,  L-9,  Zone-5,  RND Spigot,  0.2,  0.0,Laser Cutter
+WD,  309,  560001,  L-9,  Zone-5,  T-Shoe,  0.4,  0.0,Laser Cutter
+WD,  310,  560001,  L-9,  Zone-5,  T-Straight (COIL),  1.8,  0.0,Laser Cutter
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 13.4
+WD,  299,  560001,  L-9,  Zone-5,  T-Shoe,  0.4,  0.0,Plastic
+WD,  300,  560001,  L-9,  Zone-5,  TDFL STRT,  1.5,  0.0,Plastic
+WD,  301,  560001,  L-9,  Zone-5,  T-Taper,  0.7,  0.0,Plastic
+WD,  302,  560001,  L-9,  Zone-5,  TDFL STRT,  1.1,  0.0,Plastic
+WD,  303,  560001,  L-9,  Zone-5,  T-Taper,  1.1,  0.6,Plastic
+WD,  304,  560001,  L-9,  Zone-5,  TDFL-LPE STRT,  2.4,  0.0,Plastic
+WD,  305,  560001,  L-9,  Zone-5,  T-Shoe,  0.3,  0.0,Plastic
+WD,  306,  560001,  L-9,  Zone-5,  T-Straight (COIL),  1.5,  0.0,Plastic
+WD,  306A,  560001,  L-9,  Zone-5,  RND Spigot,  0.1,  0.0,Plastic
+WD,  306B,  560001,  L-9,  Zone-5,  RND Spigot,  0.2,  0.0,Plastic
+WD,  307,  560001,  L-9,  Zone-5,  T-Taper,  0.5,  0.0,Plastic
+WD,  308,  560001,  L-9,  Zone-5,  TDFL-LPE STRT,  1.2,  0.0,Plastic
+WD,  308A,  560001,  L-9,  Zone-5,  RND Spigot,  0.2,  0.0,Plastic
+WD,  309,  560001,  L-9,  Zone-5,  T-Shoe,  0.4,  0.0,Plastic
+WD,  310,  560001,  L-9,  Zone-5,  T-Straight (COIL),  1.8,  0.0,Plastic
