@@ -1,0 +1,7 @@
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins)
+WD,  323,  560001,  L-9,  Zone-1,  T-Taper,  1.0,  0.6
+WD,  303,  560001,  L-9,  Zone-1,  T-Taper,  1.1,  0.6
+WD,  325,  560001,  L-9,  Zone-1,  T-Shoe,  0.4,  0.3
+WD,  304,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  2.4,  0.0
+WD,  324,  560001,  L-9,  Zone-1,  TDFL STRT,  2.7,  1.9
+WD,  326,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  1.6,  0.0

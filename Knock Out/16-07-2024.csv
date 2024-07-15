@@ -1,0 +1,23 @@
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins)
+WD,328,560001,  L-9,  Zone-1,  T-RAD-B,1.3,0
+WD,320,560001,  L-9,  Zone-1,  T-RAD-B,1.3,0
+WD,330,560001,  L-9,  Zone-1,  T-Radius Offset,1.4,0
+WD,335,560001,  L-9,  Zone-1,  T-Radius Offset,1.4,0
+WD,339,560001,  L-9,  Zone-1,  T-Radius Offset,2,0
+WD,300,560001,  L-9,  Zone-1,  TDFL STRT,1.5,0
+WD,302,560001,  L-9,  Zone-1,  TDFL STRT,1.1,0
+WD,308,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.2,0
+WD,334,560001,  L-9,  Zone-1,  T-RAD-B,1.1,0
+WD,312,560001,  L-9,  Zone-1,  T-Taper,0.6,0
+WD,301,560001,  L-9,  Zone-1,  T-Taper,0.7,0
+WD,309,560001,  L-9,  Zone-1,  T-Shoe,0.4,0
+WD,329,560001,  L-9,  Zone-1,  T-Taper,0.6,0
+WD,307,560001,  L-9,  Zone-1,  T-Taper,0.5,0
+WD,316,560001,  L-9,  Zone-1,  T-Shoe,0.3,0
+WD,299,560001,  L-9,  Zone-1,  T-Shoe,0.4,0
+WD,321,560001,  L-9,  Zone-1,  T-Taper,0.6,0
+WD,305,560001,  L-9,  Zone-1,  T-Shoe,0.3,0
+WD,319,560001,  L-9,  Zone-1,  T-Shoe,0.4,0
+WD,341,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.5,0
+WD,340,560001,  L-9,  Zone-1,  T-Taper,1.5,0
+WD,318,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.2,0

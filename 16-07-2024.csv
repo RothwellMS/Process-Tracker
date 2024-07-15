@@ -1,0 +1,43 @@
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 21.3
+WD,328,560001,  L-9,  Zone-1,  T-RAD-B,1.3,0,Knock Out
+WD,320,560001,  L-9,  Zone-1,  T-RAD-B,1.3,0,Knock Out
+WD,330,560001,  L-9,  Zone-1,  T-Radius Offset,1.4,0,Knock Out
+WD,335,560001,  L-9,  Zone-1,  T-Radius Offset,1.4,0,Knock Out
+WD,339,560001,  L-9,  Zone-1,  T-Radius Offset,2,0,Knock Out
+WD,300,560001,  L-9,  Zone-1,  TDFL STRT,1.5,0,Knock Out
+WD,302,560001,  L-9,  Zone-1,  TDFL STRT,1.1,0,Knock Out
+WD,308,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.2,0,Knock Out
+WD,334,560001,  L-9,  Zone-1,  T-RAD-B,1.1,0,Knock Out
+WD,312,560001,  L-9,  Zone-1,  T-Taper,0.6,0,Knock Out
+WD,301,560001,  L-9,  Zone-1,  T-Taper,0.7,0,Knock Out
+WD,309,560001,  L-9,  Zone-1,  T-Shoe,0.4,0,Knock Out
+WD,329,560001,  L-9,  Zone-1,  T-Taper,0.6,0,Knock Out
+WD,307,560001,  L-9,  Zone-1,  T-Taper,0.5,0,Knock Out
+WD,316,560001,  L-9,  Zone-1,  T-Shoe,0.3,0,Knock Out
+WD,299,560001,  L-9,  Zone-1,  T-Shoe,0.4,0,Knock Out
+WD,321,560001,  L-9,  Zone-1,  T-Taper,0.6,0,Knock Out
+WD,305,560001,  L-9,  Zone-1,  T-Shoe,0.3,0,Knock Out
+WD,319,560001,  L-9,  Zone-1,  T-Shoe,0.4,0,Knock Out
+WD,341,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.5,0,Knock Out
+WD,340,560001,  L-9,  Zone-1,  T-Taper,1.5,0,Knock Out
+WD,318,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.2,0,Knock Out
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 3.4
+WD,  323,  560001,  L-9,  Zone-1,  T-Taper,  1.0,  0.6,Insulation
+WD,  303,  560001,  L-9,  Zone-1,  T-Taper,  1.1,  0.6,Insulation
+WD,  325,  560001,  L-9,  Zone-1,  T-Shoe,  0.4,  0.3,Insulation
+WD,  304,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  2.4,  0.0,Insulation
+WD,  324,  560001,  L-9,  Zone-1,  TDFL STRT,  2.7,  1.9,Insulation
+WD,  326,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  1.6,  0.0,Insulation
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 19.8
+WD,  337,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
+WD,  311,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.8,  0.0,Straight Line
+WD,  306,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.5,  0.0,Straight Line
+WD,  317,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.4,  0.0,Straight Line
+WD,  336,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
+WD,  314,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.5,  0.0,Straight Line
+WD,  333,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
+WD,  313,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.6,  0.0,Straight Line
+WD,  310,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.8,  0.0,Straight Line
+WD,  332,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
+WD,  338,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
+WD,  331,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
