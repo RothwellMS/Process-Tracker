@@ -21,13 +21,13 @@ WD,319,560001,  L-9,  Zone-1,  T-Shoe,0.4,0,Knock Out
 WD,341,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.5,0,Knock Out
 WD,340,560001,  L-9,  Zone-1,  T-Taper,1.5,0,Knock Out
 WD,318,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.2,0,Knock Out
-Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 3.4
-WD,  323,  560001,  L-9,  Zone-1,  T-Taper,  1.0,  0.6,Insulation
-WD,  303,  560001,  L-9,  Zone-1,  T-Taper,  1.1,  0.6,Insulation
-WD,  325,  560001,  L-9,  Zone-1,  T-Shoe,  0.4,  0.3,Insulation
-WD,  304,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  2.4,  0.0,Insulation
-WD,  324,  560001,  L-9,  Zone-1,  TDFL STRT,  2.7,  1.9,Insulation
-WD,  326,  560001,  L-9,  Zone-1,  TDFL-LPE STRT,  1.6,  0.0,Insulation
+Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 6.6
+WD,323,560001,  L-9,  Zone-1,  T-Taper,1,0.6,Insulation
+WD,303,560001,  L-9,  Zone-1,  T-Taper,1.1,0.6,Insulation
+WD,325,560001,  L-9,  Zone-1,  T-Shoe,0.4,0.3,Insulation
+WD,304,560001,  L-9,  Zone-1,  TDFL-LPE STRT,2.4,2,Insulation
+WD,324,560001,  L-9,  Zone-1,  TDFL STRT,2.7,1.9,Insulation
+WD,326,560001,  L-9,  Zone-1,  TDFL-LPE STRT,1.6,1.2,Insulation
 Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins),Opreation,Sum: 19.8
 WD,  337,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.7,  0.0,Straight Line
 WD,  311,  560001,  L-9,  Zone-1,  T-Straight (COIL),  1.8,  0.0,Straight Line
