@@ -20,9 +20,8 @@ class DataProcessor:
         except Exception as e:
             print(f"Failed to set DPI awareness: {e}")
 
-        self.Laser_Cutter_path = "Laser Cutter/"
+        self.Laser_Cutter_Path = "Laser Cutter/"
         self.Knock_Out_Path = "Knock Out/"
-        self.Plastic_Path = "Plastic/"
         self.Insulation_Path = "Insulation/"
         self.Straight_Line_Path = "Straight Line/"
         self.Storage_Path = "Storage/"
@@ -86,7 +85,7 @@ class DataProcessor:
                                 "Invalid QR code"))
                             return
                         del t_data[6], t_data[-2], t_data[-1]
-                        t_data = ", ".join(t_data)
+                        t_data = ", ".join([x.strip() for x in t_data])
                         self.t_data = t_data
                     except IndexError as e:
                         self.handle_error(e)
@@ -95,8 +94,62 @@ class DataProcessor:
                 self.data_entry.delete(0, tk.END)
                 self.status_label.config(
                     text="Please scan a Cage Code or Input Exit to Interrupt", fg="green")
+            elif data.endswith(" D"):
+                self.process_deletion(data)
             else:
                 self.process_regular_data(data)
+
+    def process_deletion(self, data):
+        """
+        1. Find the data in the Storage.csv file
+        2. Get the full data from the Storage.csv file
+        3. Try deleting the data from the Storage.csv file, if failed then raise an exception and handle it
+        4. Add the data to Log.csv file and set flag to true
+        """
+        data = [x.strip() for x in data.strip().split(",")[:3]]
+        storage_path = os.path.join(self.Storage_Path, "Storage.csv")
+
+        try:
+            with open(storage_path, "r", newline="") as storage_file:
+                rows = list(csv.reader(storage_file))
+        except IOError as e:
+            self.handle_error(e)
+            return
+
+        del_data = None
+
+        for row in rows:
+            if [x.strip() for x in row[:len(data)]] == data:
+                del_data = row
+                break
+        if del_data is None:
+            self.handle_error(ValueError("Data not found in Storage"))
+            return
+
+        try:
+            rows.remove(del_data)
+            del_data = del_data[:-1]
+        except IndexError as e:
+            self.handle_error(e)
+            return
+        except ValueError as e:
+            self.handle_error(e)
+            return
+
+        with open(storage_path, "w", newline="") as storage_file:
+            writer = csv.writer(storage_file)
+            writer.writerows(rows)
+
+        current_time = datetime.now().strftime("%d-%m-%Y")
+
+        del_data.append(current_time)
+        del_data = ",".join([x.strip() for x in del_data])
+
+        self.data_write(self.Storage_Path, del_data, flag=True)
+        self.data_entry.delete(0, tk.END)
+        self.display_label(del_data)
+        self.status_label.config(
+            text="Data processed successfully.", fg="green")
 
     def process_regular_data(self, data):
         if self.received_data == data:
@@ -158,32 +211,39 @@ class DataProcessor:
             return self.Laser_Cutter_path
         elif data.endswith(" K"):
             return self.Knock_Out_Path
-        elif data.endswith(" P"):
-            return self.Plastic_Path
         elif data.endswith(" I"):
             return self.Insulation_Path
         elif data.endswith(" S"):
             return self.Straight_Line_Path
-        elif data.endswith(" T"):
+        elif data.endswith(" T") or data.endswith(" D"):
             return self.Storage_Path
         else:
             return "Error"
 
-    def data_write(self, file_path, data):
+    def data_write(self, file_path, data, flag=False):
         if file_path == self.Storage_Path:
-            storage_file_name = f"{file_path}Storage.csv"
-            log_file_name = f"{file_path}Log.csv"
+            storage_file_name = os.path.join(self.Storage_Path, "Storage.csv")
+            log_file_name = os.path.join(self.Storage_Path, "Log.csv")
 
             if not os.path.exists(storage_file_name):
                 with open(storage_file_name, "w") as new_file:
                     new_file.write(
-                        "Ref,Item No.,NC#,Field 1,Field 2,End1,End2,Cage No.,Date\n")
+                        "Ref,Item No.,NC#,Field 1,Field 2,Description,End1,End2,Cage No.,Date\n")
 
-            with open(storage_file_name, "a") as csv_file:
-                csv_file.write(data)
+            if not os.path.exists(log_file_name):
+                with open(log_file_name, "w") as new_file:
+                    new_file.write(
+                        "Ref,Item No.,NC#,Field 1,Field 2,Description,End1,End2,Cage No.,Date,Operation\n")
+
+            if not flag:
+                with open(storage_file_name, "a") as csv_file:
+                    csv_file.write(data)
 
             with open(log_file_name, "a") as csv_file:
-                csv_file.write(data)
+                if flag:
+                    csv_file.write(f"{data.strip()}, Delivered\n")
+                else:
+                    csv_file.write(f"{data.strip()}, Storaged\n")
 
         else:
             current_date = datetime.now().strftime("%d-%m-%Y")
@@ -216,30 +276,39 @@ class DataProcessor:
         if str(e) != "The QR code has been scanned":
             self.received_data = ""
 
-    def calculate_sum(self, folders, summary_file):
+    def calculate_sum(self):
         """Calculates the sum for each folder and writes to the summary file."""
+        folders = [self.Insulation_Path,
+                   self.Laser_Cutter_Path,
+                   self.Knock_Out_Path,
+                   self.Straight_Line_Path]
         sums = {}
-
-        if os.path.exists(summary_file):
-            os.remove(summary_file)
+        current_date = datetime.now().strftime("%d-%m-%Y")
+        if os.path.exists(f'{current_date}.csv'):
+            os.remove(f'{current_date}.csv')
 
         for folder in folders:
-            file_path = os.path.join(folder, f"{datetime.now().strftime('%d-%m-%Y')}.csv")
+            file_path = os.path.join(
+                folder, f"{datetime.now().strftime('%d-%m-%Y')}.csv")
             if os.path.exists(file_path):
                 total = 0
                 with open(file_path, "r") as csv_file:
                     reader = csv.reader(csv_file)
                     next(reader)
-                    total = sum(float(row[7]) if folder == "Insulation/" else float(row[6]) for row in reader)
-                sums[folder] = round(total, 2)
+                    total = sum(
+                        float(row[7]) if folder == "Insulation/" else float(row[6]) for row in reader)
+                    sums[folder] = round(total, 2)
 
-                with open(summary_file, 'a') as record:
-                    record.write(f"{folder.strip('/')} Sum: {sums[folder]} m^2\n")
-                    record.write(f"Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins)\n")
-                    csv_file.seek(0)
-                    next(reader)  # Skip header again
-                    for row in reader:
-                        record.write(",".join(row) + f",{folder.strip('/')}\n")
+                    with open(f'{current_date}.csv', 'a') as record:
+                        record.write(
+                            f"{folder.strip('/')} Sum: {sums[folder]} m^2\n")
+                        record.write(
+                            f"Ref,Item No.,NC#,Field 1,Field 2,Description,Area(m^2)(Metal),Area(m^2)(Ins)\n")
+                        csv_file.seek(0)
+                        next(reader)  # Skip header again
+                        for row in reader:
+                            record.write(",".join(row) +
+                                         f",{folder.strip('/')}\n")
             else:
                 sums[folder] = None
 
