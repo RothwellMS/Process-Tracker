@@ -85,7 +85,8 @@ class DataProcessor:
                                 "Invalid QR code"))
                             return
                         del t_data[6], t_data[-2], t_data[-1]
-                        t_data = ", ".join([x.strip() for x in t_data])
+                        t_data = [x.strip() for x in t_data]
+                        t_data = ",".join(t_data)
                         self.t_data = t_data
                     except IndexError as e:
                         self.handle_error(e)
@@ -166,7 +167,7 @@ class DataProcessor:
             s_data = data[:-2]
             s_data = s_data.strip().split(",")
             del s_data[6:9]
-            s_data = ", ".join(s_data) + "\n"
+            s_data = ",".join(s_data) + "\n"
         except IndexError as e:
             self.handle_error(e)
             return
@@ -236,8 +237,13 @@ class DataProcessor:
                         "Ref,Item No.,NC#,Field 1,Field 2,Description,End1,End2,Cage No.,Date,Operation\n")
 
             if not flag:
+                with open(storage_file_name, "r") as csv_file:
+                    existing_data = csv_file.read()
+                    if data in existing_data:
+                        raise ValueError("Data already exists in the file")
                 with open(storage_file_name, "a") as csv_file:
                     csv_file.write(data)
+
 
             with open(log_file_name, "a") as csv_file:
                 if flag:
