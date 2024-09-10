@@ -1,9 +1,12 @@
 import csv
 from datetime import datetime
 import os
+import re
 import tkinter as tk
 from tkinter import messagebox
 from ctypes import windll
+from Merge import merge_table
+import pandas as pd
 
 
 class DataProcessor:
@@ -27,7 +30,10 @@ class DataProcessor:
         self.Storage_Path = "Storage/"
 
         self.received_data = ""
+        self.cage_No = 0
+        self.Storage_Rows = []
         self.awaiting_cage_code = False  # Track if awaiting a Cage No
+        self.awaiting_allocation = False  # Track if awaiting an allocation
 
         # Create the main window
         self.window = tk.Tk()
@@ -62,6 +68,10 @@ class DataProcessor:
 
     def calculate_sum_before_close(self):
         self.calculate_sum()
+        try:
+            merge_table("Storage/Storage.csv", "Storage/Location.csv")
+        except Exception as e:
+            pass
         self.window.destroy()
 
     def process_data_ui(self, event=None):
@@ -69,6 +79,8 @@ class DataProcessor:
 
         if self.awaiting_cage_code:
             self.process_cage_code(data)
+        elif self.awaiting_allocation:
+            self.process_allocation(data)
         else:
             if data.endswith(" T"):
                 if self.received_data == data:
@@ -76,29 +88,145 @@ class DataProcessor:
                         "The QR code has been scanned"))
                     return
                 else:
-                    self.received_data = data
-                    try:
-                        t_data = data[:-2]
-                        t_data = t_data.strip().split(",")
-                        if len(t_data) < 10:
-                            self.handle_error(ValueError(
-                                "Invalid QR code"))
-                            return
-                        del t_data[6], t_data[-2], t_data[-1]
-                        t_data = [x.strip() for x in t_data]
-                        t_data = ",".join(t_data)
-                        self.t_data = t_data
-                    except IndexError as e:
-                        self.handle_error(e)
+                    if re.match(r'^\d+ T', data):
+                        data = data.strip()[:-2]
+                        self.cage_No = data
+                        self.awaiting_allocation = True
+                        self.data_entry.delete(0, tk.END)
+                        self.status_label.config(
+                            text=f"Current Cage is {self.cage_No}. Please scan a location code or a duct QR", fg="green")
                         return
-                self.awaiting_cage_code = True
-                self.data_entry.delete(0, tk.END)
-                self.status_label.config(
-                    text="Please scan a Cage Code or Input Exit to Interrupt", fg="green")
+                    elif re.match(r'^\d+-[A-Z]-[A-Z] T$', data):
+                        data = data.strip()[:-2]
+                        df = pd.read_csv("Storage/Location.csv")
+                        if data in df['Location'].values:
+                            try:
+                                df['Cage No.'] = df['Cage No.'].astype(str)
+                                df.loc[df['Location'] == data,
+                                       'Cage No.'] = str(0)
+                                df.to_csv("Storage/Location.csv", index=False)
+                                self.data_entry.delete(0, tk.END)
+                                self.status_label.config(
+                                    text="Location has been reset successfully", fg="green")
+                            except Exception as e:
+                                self.handle_error(e)
+                                return
+                        else:
+                            self.handle_error(ValueError(
+                                "Location not found in the storage list"))
+                            return
+        # if self.cage_No:
+        #     self.process_cage_code(data)
+                    else:
+                        self.received_data = data
+                        try:
+                            t_data = data[:-2]
+                            t_data = t_data.strip().split(",")
+                            if len(t_data) < 10:
+                                self.handle_error(ValueError(
+                                    "Invalid QR code"))
+                                return
+                            del t_data[6], t_data[-2], t_data[-1]
+                            t_data = [x.strip() for x in t_data]
+                            t_data = ",".join(t_data)
+                            self.t_data = t_data
+                        except Exception as e:
+                            self.handle_error(e)
+                            return
+                        self.awaiting_cage_code = True
+                        self.data_entry.delete(0, tk.END)
+                        self.status_label.config(
+                            text="Please scan a Cage Code or Input Exit to Interrupt", fg="green")
             elif data.endswith(" D"):
                 self.process_deletion(data)
             else:
                 self.process_regular_data(data)
+
+    def process_allocation(self, data):
+        self.alloction_file = "Storage/Location.csv"
+
+        df = pd.read_csv(self.alloction_file)
+
+        if data.lower() == "exit t" and not self.Storage_Rows:
+            self.awaiting_allocation = False
+            self.data_entry.delete(0, tk.END)
+            self.status_label.config(
+                text="Allocation process interrupted", fg="green")
+            return
+        elif data.lower() == "exit t" and self.Storage_Rows:
+            self.data_entry.delete(0, tk.END)
+            self.write_rows_to_storage()
+        elif re.match(r'^\d+-[A-Z]-[A-Z] T$', data):
+            data = data.strip()[:-2]
+            if data in df['Location'].values:
+                df['Cage No.'] = df['Cage No.'].astype(str)
+                df.loc[df['Location'] == data, 'Cage No.'] = str(self.cage_No)
+                df.to_csv(self.alloction_file, index=False)
+
+                self.cage_No = 0
+                self.awaiting_allocation = False
+                self.data_entry.delete(0, tk.END)
+                self.status_label.config(
+                    text="Cage Allocated Successfully", fg="green")
+            else:
+                self.handle_error(ValueError(f"Location '{data}' not found"))
+        else:
+            t_data = data[:-2]
+            t_data = t_data.strip().split(",")
+            if len(t_data) < 10:
+                self.handle_error(ValueError(
+                    "Invalid QR code"))
+                return
+            del t_data[6], t_data[-2], t_data[-1]
+            t_data = [x.strip() for x in t_data]
+            t_data = ",".join(t_data)
+            if t_data not in self.Storage_Rows:
+                self.display_label(t_data)
+                self.status_label.config(
+                    text="A duct QR has been scanned successfully", fg="green")
+                self.data_entry.delete(0, tk.END)
+                self.Storage_Rows.append(t_data)
+            else:
+                self.handle_error(ValueError(
+                    "The QR code has already been scanned."))
+
+    def write_rows_to_storage(self):
+        """
+        1. Open the storage file and log file
+        2. Write the data in storage rows list to the storage file and log file
+        2b. The log file needs to add "Storaged" at the end
+        3. Reset the storage rows list
+        4. Show the data has been processed
+        5. Reset the allocation status
+        6. Reset the cage No
+        """
+        current_date = datetime.now().strftime("%d-%m-%Y")
+        storage_file_name = os.path.join(self.Storage_Path, "Storage.csv")
+        log_file_name = os.path.join(self.Storage_Path, "Log.csv")
+        if not os.path.exists(storage_file_name):
+            with open(storage_file_name, "w") as new_file:
+                new_file.write(
+                    "Ref,Item No.,NC#,Field 1,Field 2,Description,End1,End2,Cage No.,Date\n")
+        if not os.path.exists(log_file_name):
+            with open(log_file_name, "w") as new_file:
+                new_file.write(
+                    "Ref,Item No.,NC#,Field 1,Field 2,Description,End1,End2,Cage No.,Date,Operation\n")
+        try:
+            with open(storage_file_name, "a") as storage_file:
+                with open(log_file_name, "a") as log_file:
+                    for row in self.Storage_Rows:
+                        storage_file.write(
+                            f"{row},{self.cage_No},{current_date}\n")
+                        log_file.write(f"{row},{self.cage_No},{
+                                       current_date},Storaged\n")
+        except Exception as e:
+            self.handle_error(e)
+            return
+        self.Storage_Rows = []
+        self.awaiting_allocation = False
+        self.cage_No = 0
+        self.status_label.config(
+            text="All label has been written in the storage", fg="green")
 
     def process_deletion(self, data):
         """
@@ -183,7 +311,7 @@ class DataProcessor:
 
     def process_cage_code(self, data):
         if not data[:-2].isdigit():
-            if data.lower() == "exit":
+            if data.lower() == "exit t":
                 self.received_data = ""
                 self.status_label.config(
                     text="Storage Process has been interrupted. Please continue scan.", fg="green")
@@ -196,7 +324,7 @@ class DataProcessor:
         else:
             cage_no = data[:-2]
             current_date = datetime.now().strftime("%d-%m-%Y")
-            combined_data = f"{self.t_data}, {cage_no}, {current_date}\n"
+            combined_data = f"{self.t_data},{cage_no},{current_date}\n"
             try:
                 self.data_write(self.Storage_Path, combined_data)
                 self.status_label.config(
@@ -244,12 +372,11 @@ class DataProcessor:
                 with open(storage_file_name, "a") as csv_file:
                     csv_file.write(data)
 
-
             with open(log_file_name, "a") as csv_file:
                 if flag:
-                    csv_file.write(f"{data.strip()}, Delivered\n")
+                    csv_file.write(f"{data.strip()},Delivered\n")
                 else:
-                    csv_file.write(f"{data.strip()}, Storaged\n")
+                    csv_file.write(f"{data.strip()},Storaged\n")
 
         else:
             current_date = datetime.now().strftime("%d-%m-%Y")
